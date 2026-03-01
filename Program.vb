@@ -92,11 +92,59 @@ Module Program
 
 
     ''' <summary>
-    ''' Legt einen neuen Benutzer an.
+    ''' Legt einen neuen Benutzer anhand von Eingabedaten an.
     ''' </summary>
     Sub BenutzerAnlegen()
-        Console.WriteLine("Funktion BenutzerAnlegen noch nicht implementiert.")
+
+        Console.Clear()
+        BegruessungAnzeigen()
+
+        If nutzerListe.Count >= 999 Then
+            Console.WriteLine("Maximale Anzahl von 999 Benutzern erreicht.")
+            Console.ReadLine()
+            Exit Sub
+        End If
+
+        Console.Write("Bitte geben Sie eine dreistellige Benutzer-Nummer ein (000-999): ")
+        Dim nummerInput As String = Console.ReadLine()
+
+        Dim nummer As Integer
+
+        If Not Integer.TryParse(nummerInput, nummer) OrElse nummer < 0 OrElse nummer > 999 Then
+            Console.WriteLine("Ungültige Nummer!")
+            Console.ReadLine()
+            Exit Sub
+        End If
+
+        Dim nummerFormatiert As String = nummer.ToString("D3")
+
+        Console.Write("Vorname eingeben: ")
+        Dim vorname As String = Console.ReadLine().Trim()
+
+        Console.Write("Nachname eingeben: ")
+        Dim nachname As String = Console.ReadLine().Trim()
+
+        Dim neueID As String = "U" & nummerFormatiert
+
+        For Each nutzer In nutzerListe
+            If nutzer.BenutzerID = neueID Then
+                Console.WriteLine("Diese Benutzer-ID existiert bereits!")
+                Console.ReadLine()
+                Exit Sub
+            End If
+        Next
+
+        Dim neuerBenutzer As New Benutzer
+        neuerBenutzer.BenutzerID = neueID
+        neuerBenutzer.Name = vorname & " " & nachname
+
+        nutzerListe.Add(neuerBenutzer)
+
+        Console.WriteLine()
+        Console.WriteLine("Benutzer erfolgreich angelegt:")
+        Console.WriteLine(neuerBenutzer.BenutzerID & " - " & neuerBenutzer.Name)
         Console.ReadLine()
+
     End Sub
 
 
