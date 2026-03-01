@@ -124,6 +124,12 @@ Module Program
         Console.Write("Nachname eingeben: ")
         Dim nachname As String = Console.ReadLine().Trim()
 
+        If Not IstGueltigerName(vorname) OrElse Not IstGueltigerName(nachname) Then
+            Console.WriteLine("Vor- und Nachname dürfen nur Buchstaben enthalten!")
+            Console.ReadLine()
+            Exit Sub
+        End If
+
         Dim neueID As String = "U" & nummerFormatiert
 
         For Each nutzer In nutzerListe
@@ -303,5 +309,20 @@ Module Program
         End If
 
     End Sub
+
+    ''' <summary>
+    ''' Prüft, ob ein Name nur aus Buchstaben besteht.
+    ''' </summary>
+    Function IstGueltigerName(text As String) As Boolean
+
+        For Each zeichen As Char In text
+            If Not Char.IsLetter(zeichen) Then
+                Return False
+            End If
+        Next
+
+        Return True
+
+    End Function
 
 End Module
