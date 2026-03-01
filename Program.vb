@@ -1,12 +1,20 @@
 Imports System
 
 Module Program
+    Structure Buch
+        Dim ISBN As String
+        Dim Titel As String
+        Dim Autor As String
+        Dim IstAusgeliehen As Boolean
+    End Structure
+    Dim bibliothek As New List(Of Buch)
 
     ''' <summary>
     ''' Einstiegspunkt des Programms.
     ''' </summary>
     Sub Main()
 
+        BuecherAusDateiLaden()
         BegruessungAnzeigen()
         HauptmenueStarten()
 
@@ -62,7 +70,8 @@ Module Program
                     AusgelieheneBuecherAnzeigen()
                 Case "7"
                     Console.WriteLine("Programm wird beendet...")
-                    Console.ReadLine()
+                    Threading.Thread.Sleep(1500)
+                    Exit Do
                 Case Else
                     Console.WriteLine("Ungültige Eingabe!")
                     Console.ReadLine()
@@ -86,8 +95,37 @@ Module Program
     ''' Zeigt alle Bücher der Bibliothek an.
     ''' </summary>
     Sub AlleBuecherAnzeigen()
-        Console.WriteLine("Funktion AlleBuecherAnzeigen noch nicht implementiert.")
+
+        Console.Clear()
+        BegruessungAnzeigen()
+
+        If bibliothek.Count = 0 Then
+            Console.WriteLine("Keine Bücher vorhanden.")
+        Else
+
+            For Each buch In bibliothek
+
+                Dim status As String
+
+                If buch.IstAusgeliehen Then
+                    status = "Verliehen"
+                Else
+                    status = "Verfügbar"
+                End If
+
+                Console.WriteLine(buch.ISBN & " - " &
+                              buch.Titel & " - " &
+                              buch.Autor & " - " &
+                              status)
+
+            Next
+
+        End If
+
+        Console.WriteLine()
+        Console.WriteLine("Enter drücken um zurückzukehren...")
         Console.ReadLine()
+
     End Sub
 
 
@@ -124,5 +162,38 @@ Module Program
     Sub AusgelieheneBuecherAnzeigen()
         Console.WriteLine("Funktion AusgelieheneBuecherAnzeigen noch nicht implementiert.")
         Console.ReadLine()
+    End Sub
+    Sub BuecherAusDateiLaden()
+
+        Dim pfad As String = "C:\Users\Lukas HARTmann\Documents\Studium Lukas\Informatik\library_books.csv"
+
+        If IO.File.Exists(pfad) Then
+
+            Dim zeilen() As String = IO.File.ReadAllLines(pfad)
+
+            For i As Integer = 1 To zeilen.Length - 1
+
+                Dim teile() As String = zeilen(i).Split(","c)
+
+                Dim neuesBuch As New Buch
+                neuesBuch.ISBN = teile(0).Trim()
+                neuesBuch.Titel = teile(1).Trim()
+                neuesBuch.Autor = teile(2).Trim()
+
+                If teile(3).Trim().ToLower() = "borrowed" Then
+                    neuesBuch.IstAusgeliehen = True
+                Else
+                    neuesBuch.IstAusgeliehen = False
+                End If
+
+                bibliothek.Add(neuesBuch)
+
+            Next
+
+        Else
+            Console.WriteLine("CSV-Datei wurde nicht gefunden!")
+            Console.ReadLine()
+        End If
+
     End Sub
 End Module
