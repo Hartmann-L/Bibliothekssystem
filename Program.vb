@@ -189,9 +189,12 @@ Module Program
         Console.ReadLine()
     End Sub
 
+    ''' <summary>
+    ''' Liest alle Bücher aus der CSV-Datei und speichert sie in der Bibliotheksliste.
+    ''' </summary>
     Sub BuecherAusDateiLaden()
 
-        Dim pfad As String = "C:\Users\Lukas HARTmann\Documents\Studium Lukas\Informatik\library_books.csv"
+        Dim pfad As String = "library_books.csv"
 
         If IO.File.Exists(pfad) Then
 
@@ -228,7 +231,7 @@ Module Program
     ''' </summary>
     Sub BenutzerAusDateiLaden()
 
-        Dim pfad As String = "C:\Users\Lukas HARTmann\Documents\Studium Lukas\Informatik\library_users.csv"
+        Dim pfad As String = "library_users.csv"
 
         If IO.File.Exists(pfad) Then
 
