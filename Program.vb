@@ -9,12 +9,21 @@ Module Program
     End Structure
     Dim bibliothek As New List(Of Buch)
 
+    Structure Benutzer
+        Dim BenutzerID As String
+        Dim Name As String
+    End Structure
+    Dim nutzerListe As New List(Of Benutzer)
+
+
     ''' <summary>
     ''' Einstiegspunkt des Programms.
     ''' </summary>
     Sub Main()
 
         BuecherAusDateiLaden()
+        BenutzerAusDateiLaden()
+
         BegruessungAnzeigen()
         HauptmenueStarten()
 
@@ -133,8 +142,24 @@ Module Program
     ''' Zeigt alle hinterlegten Benutzer an.
     ''' </summary>
     Sub AlleBenutzerAnzeigen()
-        Console.WriteLine("Funktion AlleBenutzerAnzeigen noch nicht implementiert.")
+
+        Console.Clear()
+        BegruessungAnzeigen()
+
+        If nutzerListe.Count = 0 Then
+            Console.WriteLine("Keine Benutzer vorhanden.")
+        Else
+
+            For Each nutzer In nutzerListe
+                Console.WriteLine(nutzer.BenutzerID & " - " & nutzer.Name)
+            Next
+
+        End If
+
+        Console.WriteLine()
+        Console.WriteLine("Enter drücken um zurückzukehren...")
         Console.ReadLine()
+
     End Sub
 
 
@@ -163,6 +188,7 @@ Module Program
         Console.WriteLine("Funktion AusgelieheneBuecherAnzeigen noch nicht implementiert.")
         Console.ReadLine()
     End Sub
+
     Sub BuecherAusDateiLaden()
 
         Dim pfad As String = "C:\Users\Lukas HARTmann\Documents\Studium Lukas\Informatik\library_books.csv"
@@ -196,4 +222,35 @@ Module Program
         End If
 
     End Sub
+
+    ''' <summary>
+    ''' Liest alle Benutzer aus der CSV-Datei ein.
+    ''' </summary>
+    Sub BenutzerAusDateiLaden()
+
+        Dim pfad As String = "C:\Users\Lukas HARTmann\Documents\Studium Lukas\Informatik\library_users.csv"
+
+        If IO.File.Exists(pfad) Then
+
+            Dim zeilen() As String = IO.File.ReadAllLines(pfad)
+
+            For i As Integer = 1 To zeilen.Length - 1 ' Falls Header existiert
+
+                Dim teile() As String = zeilen(i).Split(","c)
+
+                Dim neuerBenutzer As New Benutzer
+                neuerBenutzer.BenutzerID = teile(0).Trim()
+                neuerBenutzer.Name = teile(1).Trim()
+
+                nutzerListe.Add(neuerBenutzer)
+
+            Next
+
+        Else
+            Console.WriteLine("Benutzer-CSV nicht gefunden!")
+            Console.ReadLine()
+        End If
+
+    End Sub
+
 End Module
