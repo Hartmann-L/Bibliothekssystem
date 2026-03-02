@@ -6,6 +6,7 @@ Module Program
         Dim Titel As String
         Dim Autor As String
         Dim IstAusgeliehen As Boolean
+        Dim AusgeliehenVon As String   ' Nur interne Speicherung, wird nicht angezeigt
     End Structure
     Dim bibliothek As New List(Of Buch)
 
@@ -218,11 +219,51 @@ Module Program
 
 
     ''' <summary>
-    ''' Leiht ein Buch anhand der ISBN aus.
+    ''' Leiht ein Buch anhand der ISBN an einen Benutzer aus.
     ''' </summary>
     Sub BuchAusleihen()
-        Console.WriteLine("Funktion BuchAusleihen noch nicht implementiert.")
+
+        Console.Clear()
+        BegruessungAnzeigen()
+
+        Console.Write("Bitte Benutzer-ID eingeben (z.B. U123): ")
+        Dim benutzerID As String = Console.ReadLine().Trim()
+
+        If Not BenutzerExistiert(benutzerID) Then
+            Console.WriteLine("Benutzer existiert nicht!")
+            Console.ReadLine()
+            Exit Sub
+        End If
+
+        Console.Write("Bitte ISBN des Buches eingeben: ")
+        Dim isbn As String = Console.ReadLine().Trim()
+
+        Dim index As Integer = FindeBuchIndex(isbn)
+
+        If index = -1 Then
+            Console.WriteLine("Buch nicht gefunden!")
+            Console.ReadLine()
+            Exit Sub
+        End If
+
+        ' Prüfen ob Buch bereits verliehen
+        If bibliothek(index).IstAusgeliehen Then
+            Console.WriteLine("Dieses Buch ist bereits verliehen!")
+            Console.ReadLine()
+            Exit Sub
+        End If
+
+        ' Interne Speicherung
+        Dim buch As Buch = bibliothek(index)
+
+        buch.IstAusgeliehen = True
+        buch.AusgeliehenVon = benutzerID
+
+        bibliothek(index) = buch
+
+        Console.WriteLine("Buch erfolgreich ausgeliehen.")
         Console.ReadLine()
+
     End Sub
 
 
@@ -322,6 +363,36 @@ Module Program
         Next
 
         Return True
+
+    End Function
+
+    ''' <summary>
+    ''' Gibt den Index eines Buches anhand der ISBN zurück.
+    ''' </summary>
+    Function FindeBuchIndex(isbn As String) As Integer
+
+        For i As Integer = 0 To bibliothek.Count - 1
+            If bibliothek(i).ISBN = isbn Then
+                Return i
+            End If
+        Next
+
+        Return -1
+
+    End Function
+
+    ''' <summary>
+    ''' Prüft, ob ein Benutzer existiert.
+    ''' </summary>
+    Function BenutzerExistiert(benutzerID As String) As Boolean
+
+        For Each nutzer In nutzerListe
+            If nutzer.BenutzerID = benutzerID Then
+                Return True
+            End If
+        Next
+
+        Return False
 
     End Function
 
