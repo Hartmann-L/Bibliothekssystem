@@ -268,11 +268,58 @@ Module Program
 
 
     ''' <summary>
-    ''' Gibt ein Buch anhand der ISBN zurück.
+    ''' Gibt ein ausgeliehenes Buch zurück.
     ''' </summary>
     Sub BuchZurueckgeben()
-        Console.WriteLine("Funktion BuchZurueckgeben noch nicht implementiert.")
+
+        Console.Clear()
+        BegruessungAnzeigen()
+
+        Console.Write("Bitte Benutzer-ID eingeben (z.B. U123): ")
+        Dim benutzerID As String = Console.ReadLine().Trim()
+
+        If Not BenutzerExistiert(benutzerID) Then
+            Console.WriteLine("Benutzer existiert nicht!")
+            Console.ReadLine()
+            Exit Sub
+        End If
+
+        Console.Write("Bitte ISBN des Buches eingeben: ")
+        Dim isbn As String = Console.ReadLine().Trim()
+
+        Dim index As Integer = FindeBuchIndex(isbn)
+
+        If index = -1 Then
+            Console.WriteLine("Buch nicht gefunden!")
+            Console.ReadLine()
+            Exit Sub
+        End If
+
+        ' Prüfen ob Buch überhaupt verliehen ist
+        If Not bibliothek(index).IstAusgeliehen Then
+            Console.WriteLine("Dieses Buch ist aktuell nicht verliehen!")
+            Console.ReadLine()
+            Exit Sub
+        End If
+
+        ' Prüfen ob dieses Buch vom angegebenen Benutzer ausgeliehen wurde
+        If bibliothek(index).AusgeliehenVon <> benutzerID Then
+            Console.WriteLine("Dieses Buch wurde nicht von diesem Benutzer ausgeliehen!")
+            Console.ReadLine()
+            Exit Sub
+        End If
+
+        ' Struktur korrekt ändern (wegen Value Type!)
+        Dim buch As Buch = bibliothek(index)
+
+        buch.IstAusgeliehen = False
+        buch.AusgeliehenVon = ""
+
+        bibliothek(index) = buch
+
+        Console.WriteLine("Buch erfolgreich zurückgegeben.")
         Console.ReadLine()
+
     End Sub
 
 
