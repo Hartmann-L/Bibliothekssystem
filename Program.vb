@@ -324,11 +324,43 @@ Module Program
 
 
     ''' <summary>
-    ''' Zeigt alle ausgeliehenen Bücher eines bestimmten Nutzers an.
+    ''' Zeigt alle ausgeliehenen Bücher eines Benutzers an.
     ''' </summary>
     Sub AusgelieheneBuecherAnzeigen()
-        Console.WriteLine("Funktion AusgelieheneBuecherAnzeigen noch nicht implementiert.")
+
+        Console.Clear()
+        BegruessungAnzeigen()
+
+        Console.Write("Bitte Benutzer-ID eingeben (z.B. U123): ")
+        Dim benutzerID As String = Console.ReadLine().Trim()
+
+        If Not BenutzerExistiert(benutzerID) Then
+            Console.WriteLine("Benutzer existiert nicht!")
+            Console.ReadLine()
+            Exit Sub
+        End If
+
+        Dim hatBuecher As Boolean = False
+
+        For Each buch In bibliothek
+
+            If buch.IstAusgeliehen AndAlso buch.AusgeliehenVon = benutzerID Then
+                Console.WriteLine(buch.ISBN & " - " &
+                              buch.Titel & " - " &
+                              buch.Autor)
+                hatBuecher = True
+            End If
+
+        Next
+
+        If Not hatBuecher Then
+            Console.WriteLine("Dieser Benutzer hat aktuell keine Bücher ausgeliehen.")
+        End If
+
+        Console.WriteLine()
+        Console.WriteLine("Enter drücken um zurückzukehren...")
         Console.ReadLine()
+
     End Sub
 
     ''' <summary>
