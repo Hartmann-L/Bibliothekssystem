@@ -1,12 +1,14 @@
 Imports System
 
 Module Program
+
+
     Structure Buch
         Dim ISBN As String
         Dim Titel As String
         Dim Autor As String
         Dim IstAusgeliehen As Boolean
-        Dim AusgeliehenVon As String   ' Nur interne Speicherung, wird nicht angezeigt
+        Dim AusgeliehenVon As String   ' Nur interne Speicherung, Nutzer wird nicht angezeigt
     End Structure
     Dim bibliothek As New List(Of Buch)
 
@@ -20,6 +22,7 @@ Module Program
     ''' <summary>
     ''' Einstiegspunkt des Programms.
     ''' </summary>
+
     Sub Main()
 
         BuecherAusDateiLaden()
@@ -34,6 +37,7 @@ Module Program
     ''' <summary>
     ''' Gibt die Begrüßungsanzeige des Bibliothekssystems aus.
     ''' </summary>
+
     Sub BegruessungAnzeigen()
 
         Console.WriteLine("=========================================")
@@ -42,9 +46,12 @@ Module Program
         Console.WriteLine()
 
     End Sub
+
+
     ''' <summary>
     ''' Startet das Hauptmenü des Bibliothekssystems.
     ''' </summary>
+
     Sub HauptmenueStarten()
 
         Dim auswahl As String = ""
@@ -95,6 +102,7 @@ Module Program
     ''' <summary>
     ''' Legt einen neuen Benutzer anhand von Eingabedaten an.
     ''' </summary>
+
     Sub BenutzerAnlegen()
 
         Console.Clear()
@@ -158,6 +166,7 @@ Module Program
     ''' <summary>
     ''' Zeigt alle Bücher der Bibliothek an.
     ''' </summary>
+
     Sub AlleBuecherAnzeigen()
 
         Console.Clear()
@@ -196,6 +205,7 @@ Module Program
     ''' <summary>
     ''' Zeigt alle hinterlegten Benutzer an.
     ''' </summary>
+
     Sub AlleBenutzerAnzeigen()
 
         Console.Clear()
@@ -221,6 +231,7 @@ Module Program
     ''' <summary>
     ''' Leiht ein Buch anhand der ISBN an einen Benutzer aus.
     ''' </summary>
+
     Sub BuchAusleihen()
 
         Console.Clear()
@@ -270,6 +281,7 @@ Module Program
     ''' <summary>
     ''' Gibt ein ausgeliehenes Buch zurück.
     ''' </summary>
+
     Sub BuchZurueckgeben()
 
         Console.Clear()
@@ -309,7 +321,6 @@ Module Program
             Exit Sub
         End If
 
-        ' Struktur korrekt ändern (wegen Value Type!)
         Dim buch As Buch = bibliothek(index)
 
         buch.IstAusgeliehen = False
@@ -326,6 +337,7 @@ Module Program
     ''' <summary>
     ''' Zeigt alle ausgeliehenen Bücher eines Benutzers an.
     ''' </summary>
+
     Sub AusgelieheneBuecherAnzeigen()
 
         Console.Clear()
@@ -363,9 +375,11 @@ Module Program
 
     End Sub
 
+
     ''' <summary>
     ''' Liest alle Bücher aus der CSV-Datei und speichert sie in der Bibliotheksliste.
     ''' </summary>
+
     Sub BuecherAusDateiLaden()
 
         Dim pfad As String = "library_books.csv"
@@ -400,9 +414,11 @@ Module Program
 
     End Sub
 
+
     ''' <summary>
     ''' Liest alle Benutzer aus der CSV-Datei ein.
     ''' </summary>
+
     Sub BenutzerAusDateiLaden()
 
         Dim pfad As String = "library_users.csv"
@@ -411,7 +427,7 @@ Module Program
 
             Dim zeilen() As String = IO.File.ReadAllLines(pfad)
 
-            For i As Integer = 1 To zeilen.Length - 1 ' Falls Header existiert
+            For i As Integer = 1 To zeilen.Length - 1
 
                 Dim teile() As String = zeilen(i).Split(","c)
 
@@ -429,6 +445,7 @@ Module Program
         End If
 
     End Sub
+
 
     ''' <summary>
     ''' Prüft, ob der übergebene Name ausschließlich aus Buchstaben besteht.
@@ -451,6 +468,7 @@ Module Program
 
     End Function
 
+
     ''' <summary>
     ''' Sucht ein Buch anhand der ISBN in der Bibliotheksliste und gibt dessen Index zurück.
     ''' </summary>
@@ -471,6 +489,7 @@ Module Program
         Return -1
 
     End Function
+
 
     ''' <summary>
     ''' Prüft, ob ein Benutzer mit der angegebenen Benutzer-ID in der Benutzerliste existiert.
@@ -493,5 +512,6 @@ Module Program
         Return False
 
     End Function
+
 
 End Module
