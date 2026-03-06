@@ -431,8 +431,14 @@ Module Program
     End Sub
 
     ''' <summary>
-    ''' Prüft, ob ein Name nur aus Buchstaben besteht.
+    ''' Prüft, ob der übergebene Name ausschließlich aus Buchstaben besteht.
     ''' </summary>
+    ''' <param name="text">Der zu überprüfende Name.</param>
+    ''' <returns>True wenn der Name nur Buchstaben enthält, sonst False.</returns>
+    ''' <remarks>
+    ''' Wird zur Validierung von Vor- und Nachnamen bei der Benutzeranlage verwendet.
+    ''' </remarks>
+
     Function IstGueltigerName(text As String) As Boolean
 
         For Each zeichen As Char In text
@@ -446,8 +452,14 @@ Module Program
     End Function
 
     ''' <summary>
-    ''' Gibt den Index eines Buches anhand der ISBN zurück.
+    ''' Sucht ein Buch anhand der ISBN in der Bibliotheksliste und gibt dessen Index zurück.
     ''' </summary>
+    ''' <param name="isbn">Die ISBN des Buches, nach der gesucht werden soll.</param>
+    ''' <returns>Der Index des Buches in der Liste oder -1, wenn kein Buch mit dieser ISBN gefunden wurde.</returns>
+    ''' <remarks>
+    ''' Wird verwendet, um schnell auf ein bestimmtes Buch in der Bibliotheksliste zugreifen zu können.
+    ''' </remarks>
+
     Function FindeBuchIndex(isbn As String) As Integer
 
         For i As Integer = 0 To bibliothek.Count - 1
@@ -461,8 +473,15 @@ Module Program
     End Function
 
     ''' <summary>
-    ''' Prüft, ob ein Benutzer existiert.
+    ''' Prüft, ob ein Benutzer mit der angegebenen Benutzer-ID in der Benutzerliste existiert.
     ''' </summary>
+    ''' <param name="benutzerID">Die Benutzer-ID des zu überprüfenden Nutzers.</param>
+    ''' <returns>True wenn der Benutzer in der Liste vorhanden ist, sonst False.</returns>
+    ''' <remarks>
+    ''' Diese Funktion wird verwendet, um Eingaben des Nutzers zu validieren, 
+    ''' beispielsweise beim Ausleihen oder Zurückgeben von Büchern.
+    ''' </remarks>
+
     Function BenutzerExistiert(benutzerID As String) As Boolean
 
         For Each nutzer In nutzerListe
